@@ -9,7 +9,7 @@ import csv,os,sys
 
 def Wrapper_with_Logs(activity, path):
     def Function_with_wrapper(func):
-        def Wrapper(*args):
+        def Wrapper(*args, **kwargs):
             with open(path,'a') as f:
                 f.write(25*'-' + '\n')
                 f.write('Function: {}, Activity: {}, time: {}\n'.format(func.__name__,activity,datetime.datetime.now().isoformat()))
@@ -17,7 +17,7 @@ def Wrapper_with_Logs(activity, path):
                 f.write(' '.join('{}'.format(x) for x in args))
                 f.write('\n')
                 f.write(25*'-')
-            result = func(*args)
+            result = func(*args, **kwargs)
             return result
         return Wrapper
     return Function_with_wrapper
@@ -87,7 +87,7 @@ class Laptop:
     def remove_parameters(self,parameters):
         self.parameters.remove(parameters)
 
-    @Wrapper_with_Logs('Add_to_Promotion','C:\\Users\\PL9891\\Desktop\\P\\Projekty\\LAptopy\\LAP_Prom_List.txt')
+    @Wrapper_with_Logs('Add_to_Promotion','C:\\Users\\PL9891\\Desktop\\P\\Projekty\\Laptopy\\LAP_Prom_List.txt')
     def Add_Item_to_promotion(self):
         self.promotion.append(self.name.lower())
         return self.promotion
@@ -267,8 +267,8 @@ def ADD_OR_REM_FROM_PROM():
             input('Laptop is already in promotion. PRESS ENTER to continue:: ')
             
         else:
-            Laptop.promotion.append(pos_item.name.lower())
-            pos_item._Laptop__IsOnSale = True
+            Laptop.Add_Item_to_promotion(pos_item)
+            pos_item.IsOnSale = True
             Laptop.promotion_list()
             input('UPDATED. PRESS ENTER to continue: ')
 
@@ -276,7 +276,7 @@ def ADD_OR_REM_FROM_PROM():
         pos_item = position(Laptop.items, 'LAPTOP')
         if pos_item.name.lower() in Laptop.promotion:
             Laptop.promotion.remove(pos_item.name.lower())
-            pos_item._Laptop__IsOnSale = False
+            pos_item.IsOnSale = False
             Laptop.promotion_list()
             input('UPDATED. PRESS ENTER to continue: ')
         
@@ -295,7 +295,7 @@ def DELETE_LAPTOP():
         if pos_item.name.lower() in Laptop.promotion:
             Laptop.promotion.remove(pos_item.name.lower())
 
-        Laptop.items.remove(pos_item)
+        Laptop.remove_item(pos_item)
         Laptop.promotion_list()
         Laptop.item_list()
         input('UPDATED. PRESS ENTER to continue: ')
