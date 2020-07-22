@@ -21,4 +21,5 @@ This code presents more advanced syntax elements such as:
 In PDF documentation you can read more about function in this code, to better understand how it works.
 
 **Last Update:**
-*Script should create new directory called “Laptop_logs” which contains every file with logs created by wrapper function. This directory should be created in your current working directory (cwd).
+
+*Script should create new directory called “Laptop_logs” which contains every file with logs created by wrapper function. This directory should be created in your current working directory (cwd).*
