@@ -22,6 +22,19 @@ def Wrapper_with_Logs(activity, path):
         return Wrapper
     return Function_with_wrapper
 
+
+def path_creator(filename):    
+    os.getcwd()
+    try:
+        os.makedirs('Laptops_log')
+    except FileExistsError:
+        pass
+
+    temp_path = os.path.join(os.getcwd(),'Laptops_log')
+    end_path = os.path.join(temp_path, filename)
+    return end_path
+
+
 class Laptop:
 
     @classmethod
@@ -87,7 +100,7 @@ class Laptop:
     def remove_parameters(self,parameters):
         self.parameters.remove(parameters)
 
-    @Wrapper_with_Logs('Add_to_Promotion','C:\\Users\\PL9891\\Desktop\\P\\Projekty\\Laptopy\\LAP_Prom_List.txt')
+    @Wrapper_with_Logs('Add_to_Promotion', path_creator('promotion_logs.txt'))
     def Add_Item_to_promotion(self):
         self.promotion.append(self.name.lower())
         return self.promotion
@@ -97,7 +110,7 @@ class Laptop:
         return self.__IsOnSale
 
     @IsOnSale.setter
-    @Wrapper_with_Logs('Change_Sale_Status', 'C:\\Users\\PL9891\\Desktop\\P\\Projekty\\Laptopy\\LAP_Sale_Status.txt')
+    @Wrapper_with_Logs('Change_Sale_Status', path_creator('sale_logs.txt'))
     def IsOnSale(self, newStatus):
         if self.name.lower() in self.promotion:
             self.__IsOnSale = newStatus
@@ -111,7 +124,7 @@ class Laptop:
             return self.__price
         return prom_price
 
-    @Wrapper_with_Logs('Delete_Obj', 'C:\\Users\\PL9891\\Desktop\\P\\Projekty\\Laptopy\\LAP_Delete.txt')
+    @Wrapper_with_Logs('Delete_Obj', path_creator('delete_logs.txt'))
     def remove_item(self):
         self.items.remove(self)
 
@@ -122,7 +135,7 @@ lap_02 = Laptop('ASUS',14,['Intel Core i3-8145U','RAM[GB]:4','SSD[GB]:256','Inte
 # PART II - CONSOLE INTERFACE
 #--------------------------------------
 
-@Wrapper_with_Logs('Create_New_Obj','C:\\Users\\PL9891\\Desktop\\P\\Projekty\\Laptopy\\LAP_Create.txt')
+@Wrapper_with_Logs('Create_New_Obj', path_creator('create_logs.txt'))
 def Create_Obj():
     while True:
         choice = input('Do you want to add new object (Y/N): ')
@@ -191,8 +204,7 @@ def User_action():
         SHOW_CURRENT_LAPTOP_LISTS()
 
     elif action == '6':
-        path = input('Provide file path: ')
-        Laptop.export_to_csv(path)
+        Laptop.export_to_csv(path_creator('Laptop_list.csv'))
         input('PRESS ENTER to continue: ')
         return_to_menu()
 
